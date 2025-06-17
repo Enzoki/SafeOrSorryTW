@@ -3,11 +3,11 @@ name: Daily Check
 on:
   schedule:
   # scheduled at 5:30am (UTC+8), weekdays
-    - cron: "20 15 * * *"
+    - cron: "30 15 * * *"
   workflow_dispatch:
 
 env:
-  # ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 permissions:
   contents: write
