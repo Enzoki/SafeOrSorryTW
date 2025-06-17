@@ -1,14 +1,14 @@
 from bs4 import BeautifulSoup
-from telegram import Bot
-import requests
+import requests # 確保 requests 函式庫已引入
 import re
 import datetime as dt
 import asyncio
 import os
 import sys
-# Telegram Configuration
-TOKEN = os.environ.get('TELEGRAM_TOKEN')
-CHANNEL = '@safeorsorrytw'
+
+# Discord Configuration
+# 將 TELEGRAM_TOKEN 替換為 DISCORD_WEBHOOK_URL
+DISCORD_WEBHOOK_URL = os.environ.get('DISCORD_WEBHOOK_URL')
 
 def get_travel_advisory(country="taiwan"):
     country = country.lower().replace(' ', '-')
@@ -30,7 +30,7 @@ def get_travel_advisory(country="taiwan"):
         }
             
         return {'country': country.title(), 'level_num': int(level.split(':')[0].split(' ')[1]), 'level_text': level, 'description': description, 'reasons': reasons}
-        
+            
     except requests.RequestException as e:
         return {"error": f"Error fetching data: {str(e)}"}
 
@@ -68,10 +68,33 @@ def generate_message(travel_adv:dict, levels_map=None):
 
     return message
 
-async def send_telegram_message(token, channel, text):
+# 新增的 Discord 訊息發送函式
+async def send_discord_message(webhook_url, text):
+    payload = {
+        "content": text
+    }
     try:
-        bot = Bot(token=token)
-        await bot.send_message(chat_id=channel, text=text)
-    except Exception as e:
-        print(f"Error sending telegram message: {str(e)}", file=sys.stderr)
+        response = requests.post(webhook_url, json=payload)
+        response.raise_for_status() # 如果請求失敗，會拋出 HTTPError
+        print("Message sent to Discord successfully!")
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending message to Discord: {str(e)}", file=sys.stderr)
         sys.exit(1)
+
+# 主執行邏輯，您可以將其放在一個 main 函式中
+async def main():
+    travel_advisory_data = get_travel_advisory("taiwan") # 替換成您想查詢的國家
+    if "error" in travel_advisory_data:
+        print(travel_advisory_data["error"], file=sys.stderr)
+        sys.exit(1)
+    
+    message_to_send = generate_message(travel_advisory_data)
+    
+    if DISCORD_WEBHOOK_URL:
+        await send_discord_message(DISCORD_WEBHOOK_URL, message_to_send)
+    else:
+        print("DISCORD_WEBHOOK_URL environment variable not set.", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    asyncio.run(main())
