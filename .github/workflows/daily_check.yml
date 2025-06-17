@@ -3,7 +3,7 @@ name: Daily Check
 on:
   schedule:
   # scheduled at 5:30am (UTC+8), weekdays
-    - cron: "40 15 * * *"
+    - cron: "45 15 * * *"
   workflow_dispatch:
 
 env:
