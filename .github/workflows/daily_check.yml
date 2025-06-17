@@ -3,7 +3,7 @@ name: Daily Check
 on:
   schedule:
   # scheduled at 5:30am (UTC+8), weekdays
-    - cron: "25 21 * * *"
+    - cron: "30 05 * * *"
   workflow_dispatch:
 
 env:
@@ -41,7 +41,8 @@ jobs:
       
       - name: Run Python Code
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          #TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python daily_check.py
 
       - name: Configure Git
