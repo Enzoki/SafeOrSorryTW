@@ -3,11 +3,11 @@ name: Daily Check
 on:
   schedule:
   # scheduled at 5:30am (UTC+8), weekdays
-    - cron: "30 05 * * *"
+    - cron: "15 15 * * *"
   workflow_dispatch:
 
 env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  # ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 permissions:
   contents: write
@@ -29,13 +29,6 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       
-      - name: Verify Token
-        run: |
-          if [ -z "${{ secrets.TELEGRAM_TOKEN }}" ]; then
-            echo "Error: TELEGRAM_TOKEN is not set"
-            exit 1
-          fi
-      
       - name: Create data directory
         run: mkdir -p data
       
@@ -43,7 +36,7 @@ jobs:
         env:
           #TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python daily_check.py
+        run: python main.py
 
       - name: Configure Git
         run: |
