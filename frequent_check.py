@@ -1,4 +1,4 @@
-from main import get_travel_advisory, send_telegram_message, generate_message, TOKEN, CHANNEL
+from main import get_travel_advisory, send_discord_message, generate_message, TOKEN, CHANNEL
 from pathlib import Path
 import datetime as dt
 import asyncio
@@ -32,7 +32,7 @@ async def check_and_notify():
             4: '🔥🔥🔥🔥 警戒變化！立即採取應對措施！！！！',
         }
         message = generate_message(travel_adv, levels_map)
-        await send_telegram_message(TOKEN, CHANNEL, message)
+        await send_discord_message(TOKEN, CHANNEL, message)
         save_level(current_level)
     else:
         print(f"No change in level: {current_level}")
