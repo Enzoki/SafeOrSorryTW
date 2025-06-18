@@ -6,6 +6,8 @@ import json
 import sys
 import os
 
+DISCORD_WEBHOOK_URL = os.environ.get('DISCORD_WEBHOOK_URL')
+
 STATUS_FILE = Path('data/last_level.json')
 
 def get_last_level():
@@ -32,7 +34,7 @@ async def check_and_notify():
             4: '🔥🔥🔥🔥 警戒變化！立即採取應對措施！！！！',
         }
         message = generate_message(travel_adv, levels_map)
-        await send_discord_message(message)
+        await send_discord_message(DISCORD_WEBHOOK_URL, message)
         save_level(current_level)
     else:
         print(f"No change in level: {current_level}")
