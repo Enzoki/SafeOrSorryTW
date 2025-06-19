@@ -1,6 +1,9 @@
 # 台海警報器 SafeOrSorryTW
 
+此專案來自ryk001/SafeOrSorryTW(https://github.com/ryk001/SafeOrSorryTW)，我修改成Post到Discord，感謝ryk001，以下是ryk001撰寫的原始內容，包含他的Telegram URL。
+
 ## 簡介
+
 這是一個監控美國國務院對台灣旅遊警示等級的 Telegram 機器人。每天早上 5:30，它會告訴你今天應該照常去上班，或是...你懂的。
 
 另外，機器人每 30 分鐘會檢查一次警示等級，如有變化立即通知。
