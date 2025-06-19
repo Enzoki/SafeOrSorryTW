@@ -65,7 +65,8 @@ def generate_message(travel_adv:dict, levels_map=None):
             message += f"{k}: {v}\n"
     message += f"\n{travel_adv['description']}\n\n"
     message += f"更新時間: {current_time}"
-
+    message += F"----------"
+    
     return message
 
 # 新增的 Discord 訊息發送函式
