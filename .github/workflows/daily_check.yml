@@ -36,7 +36,7 @@ jobs:
         env:
           #TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python main.py
+        run: python daily_check.py
 
       - name: Configure Git
         run: |
