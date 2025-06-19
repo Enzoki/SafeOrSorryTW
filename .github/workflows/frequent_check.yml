@@ -2,7 +2,7 @@ name: Frequent Check
 
 on:
   schedule:
-    - cron: '* */6 * * *'  # Every 30 minutes
+    - cron: '* */3 * * *'  # Every 30 minutes
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
           #TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           #TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python main.py
+        run: python frequent_check.py
 
       - name: Configure Git
         run: |
