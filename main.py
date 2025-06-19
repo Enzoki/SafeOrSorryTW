@@ -64,7 +64,7 @@ def generate_message(travel_adv:dict, levels_map=None):
         for k, v in travel_adv['reasons'].items():
             message += f"{k}: {v}\n"
     message += f"\n{travel_adv['description']}\n\n"
-    message += f"更新時間: {current_time}"
+    message += f"更新時間: {current_time}\n\n"
     message += F"----------"
     
     return message
