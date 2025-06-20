@@ -34,7 +34,7 @@ def get_travel_advisory(country="taiwan"):
     except requests.RequestException as e:
         return {"error": f"Error fetching data: {str(e)}"}
 
-def generate_message(travel_adv:dict, levels_map=None):
+def generate_message_test(travel_adv:dict, levels_map=None):
     
     current_time = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
     weekday_phrase = '乖乖去上班吧' if current_time.weekday() < 5 else '好好享受假日吧'
@@ -67,6 +67,70 @@ def generate_message(travel_adv:dict, levels_map=None):
     message += f"更新時間: {current_time}\n\n"
     message += F"----------"
     
+    return message
+
+import datetime as dt
+
+def generate_message(travel_adv: dict, levels_map=None):
+    current_time = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
+    weekday_phrase = '該上班的上班' if current_time.weekday() < 5 else '該享受假日的享受假日'
+    current_time_formatted = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # 這部分會被新模板覆寫，但保留以防萬一或作為靈活擴展的基礎
+    # levels_map = {
+    #     1: f'今天很安全，{weekday_phrase}。',
+    #     2: '🚨🚨 警戒升級！建議提高警覺！',
+    #     3: '🚨🚨🚨 非常危險！請立即採取應對措施！！！',
+    #     4: '🚨🚨🚨🚨 極度危險！請立即採取應對措施！！！',
+    # } if levels_map is None else levels_map
+    reasons_map = {
+        "C": "犯罪率",
+        "T": "恐怖主義活動",
+        "U": "社會動盪",
+        "N": "天災",
+        "H": "衛生健康問題",
+        "K": "綁架或扣押人質",
+        "D": "不正當拘留",
+        "O": "其他",
+    }
+
+    # --- 根據「選項二」風格重新建構訊息 ---
+    message = "✈️ **台灣旅遊警示更新！**\n\n"
+
+    # 處理 Level 1 的特殊說法，並加入表情符號
+    if travel_adv['level_num'] == 1:
+        message += f"✨ **Level 1 - 正常預防措施** ✨\n"
+        message += f"一切安好！今天很安全，{weekday_phrase}囉！😊\n\n"
+    else:
+        # 對於非 Level 1 的警示，使用更嚴肅的表達方式
+        level_phrase = ""
+        if travel_adv['level_num'] == 2:
+            level_phrase = "🚨🚨 警戒升級！建議提高警覺！"
+        elif travel_adv['level_num'] == 3:
+            level_phrase = "🚨🚨🚨 非常危險！請立即採取應對措施！！！"
+        elif travel_adv['level_num'] == 4:
+            level_phrase = "🚨🚨🚨🚨 極度危險！請立即採取應對措施！！！"
+        
+        message += f"‼️ **{travel_adv['level_text']}** ‼️\n"
+        message += f"{level_phrase}\n\n"
+        
+        if travel_adv['reasons']:
+            reasons_list = '、'.join(reasons_map[k] for k in sorted(travel_adv['reasons'].keys()))
+            message += f"⚠️ **主要原因：** {reasons_list}。\n\n"
+            for k, v in travel_adv['reasons'].items():
+                message += f"• **{k}:** {v}\n"
+            message += "\n"
+
+
+    message += "🇹🇼 **美國國務院指出：**\n"
+    message += f"**{travel_adv['country']} - {travel_adv['level_text']}**\n\n"
+
+    message += "📋 **詳細說明：**\n"
+    message += f"{travel_adv['description']}\n\n"
+
+    message += f"⏰ **更新時間：** {current_time_formatted} (台灣時間)\n"
+    # --- 訊息建構結束 ---
+
     return message
 
 # 新增的 Discord 訊息發送函式
