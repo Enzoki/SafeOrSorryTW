@@ -1,6 +1,6 @@
 # 台海警報器 SafeOrSorryTW
 
-<font color ='red'>此專案來自[ryk001/SafeOrSorryTW](https://github.com/ryk001/SafeOrSorryTW)。</font>
+此專案來自[ryk001/SafeOrSorryTW](https://github.com/ryk001/SafeOrSorryTW)。
 
 我修改成Post到Discord，感謝ryk001，以下全是ryk001撰寫的原始內容，包含他的Telegram URL。
 
